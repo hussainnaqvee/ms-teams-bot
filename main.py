@@ -69,8 +69,8 @@ def join_meeting(driver):
 
     while is_join_Btn ==False:
         try:
-            joinBtn = WebDriverWait(driver, 10).until(  # By.CSS_SELECTOR,'button[aria-label="Join meeting from this browser"]'
-            EC.visibility_of_element_located((By.ID,'prejoin-join-button'))
+            joinBtn = WebDriverWait(driver, 10).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, 'button[aria-label="Join meeting from this browser"]'))
             )
             if joinBtn:
                 is_join_Btn = True
@@ -79,7 +79,7 @@ def join_meeting(driver):
             continue
 
     if joinBtn and is_join_Btn:
-        joinBtn = driver.find_element(By.ID, 'prejoin-join-button')
+        joinBtn = driver.find_element(By.CSS_SELECTOR, 'button[aria-label="Join meeting from this browser"]')
         joinBtn.click()
 
     is_loaded = False
