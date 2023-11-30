@@ -43,10 +43,9 @@ def join_meeting(driver):
             base_uri = driver.find_element(By.ID,'teamsLauncher').get_property("baseURI")
             if base_uri:
                 is_base_uri = True
-        except Exception as e:
-            print(e)
-        finally:
+        except:
             continue
+        
 
     driver.execute_script("window.open();")
 
@@ -70,7 +69,7 @@ def join_meeting(driver):
             if joinBtn:
                 is_join_Btn = True
 
-        finally:
+        except:
             continue
 
     joinBtn = driver.find_element(By.CSS_SELECTOR,'button[aria-label="Join meeting from this browser"]')
@@ -86,7 +85,7 @@ def join_meeting(driver):
             )
             if element_visible:
                 is_loaded = True
-        finally:
+        except:
             continue
 
     driver.switch_to.frame(element_visible)
@@ -101,7 +100,7 @@ def join_meeting(driver):
             )
             if input_name:
                 is_page_fully_loaded = True
-        finally:
+        except:
             continue
 
     if input_name:
