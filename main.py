@@ -44,27 +44,33 @@ def join_meeting(driver):
             if base_uri:
                 is_base_uri = True
         except:
+            if driver.current_url == 'https://teams.live.com/_#/modern-calling/':
+                is_base_uri = True
             continue
         
-
-    driver.execute_script("window.open();")
-
-    new_tab = driver.window_handles[-1]
-
-    first_tab = driver.window_handles[0]
-    driver.switch_to.window(first_tab)
-    driver.close()
-
-    driver.switch_to.window(new_tab)
-    driver.get(base_uri)
-    
     is_join_Btn = False
-    joinBtn = ''
+    joinBtn = ''   
+
+    if base_uri and is_base_uri:
+        driver.execute_script("window.open();")
+
+        new_tab = driver.window_handles[-1]
+
+        first_tab = driver.window_handles[0]
+        driver.switch_to.window(first_tab)
+        driver.close()
+
+        driver.switch_to.window(new_tab)
+        driver.get(base_uri)
+    else:
+        is_join_Btn = True
+    
+
 
     while is_join_Btn ==False:
         try:
-            joinBtn = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR,'button[aria-label="Join meeting from this browser"]'))
+            joinBtn = WebDriverWait(driver, 10).until(  # By.CSS_SELECTOR,'button[aria-label="Join meeting from this browser"]'
+            EC.visibility_of_element_located((By.ID,'prejoin-join-button'))
             )
             if joinBtn:
                 is_join_Btn = True
@@ -72,8 +78,9 @@ def join_meeting(driver):
         except:
             continue
 
-    joinBtn = driver.find_element(By.CSS_SELECTOR,'button[aria-label="Join meeting from this browser"]')
-    joinBtn.click()
+    if joinBtn and is_join_Btn:
+        joinBtn = driver.find_element(By.ID, 'prejoin-join-button')
+        joinBtn.click()
 
     is_loaded = False
     element_visible = ''
